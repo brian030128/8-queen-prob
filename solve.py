@@ -43,9 +43,7 @@ def solve(board: Board, start, r=0, c=0, place_queen=False, place_knight=False, 
 
     next_r, next_c = (r, c + 1) if c + 1 < board.n else (r + 1, 0)
 
-    # Try placing nothing
-    best_solution = solve(board, start, r=next_r, c=next_c, score=score, best_solution=best_solution, place_queen=place_queen, place_knight=place_knight, place_bishop=place_bishop)
-    # Try placing a queen
+   # Try placing a queen
     if place_queen and board.can_place(r, c, 'Q'):
         board.place_piece(r, c, 'Q')
         best_solution = solve(board, start, r=next_r, c=next_c, score=score + 1, best_solution=best_solution, place_queen=place_queen, place_knight=place_knight, place_bishop=place_bishop)
@@ -58,5 +56,8 @@ def solve(board: Board, start, r=0, c=0, place_queen=False, place_knight=False, 
         board.place_piece(r, c, 'B')
         best_solution = solve(board, start, r=next_r, c=next_c, score=score + 1, best_solution=best_solution, place_queen=place_queen, place_knight=place_knight, place_bishop=place_bishop)
         board.remove_piece(r, c)
+        
+     # Try placing nothing
+    best_solution = solve(board, start, r=next_r, c=next_c, score=score, best_solution=best_solution, place_queen=place_queen, place_knight=place_knight, place_bishop=place_bishop)
     
     return best_solution

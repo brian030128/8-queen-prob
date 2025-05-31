@@ -1,5 +1,8 @@
 import sys
 import ast
+
+from chess import *
+from solve import *
 from task1 import max_queens
 from task2 import max_bishops
 from task3 import max_knights
@@ -16,9 +19,11 @@ def main():
     n = int(sys.argv[3])
 
     if task_id == 1:
-        res = max_queens(m, n)
-        print(f"Total: {len(res)}")
-        print(res)
+        res = Result(max_queens(m, n))
+        #合計置入棋子數量：13
+        #皇后位置：[(0, 0), (0, 2), (0, 4), (1, 1), (1, 3), (2, 0), (2, 2), (2, 4), (3, 1), (3, 3), (4, 0), (4, 2), (4, 4)] 
+        print(f"合計置入棋子數量： {res.total}")
+        print(f"皇后位置： {res.queen_positions}")
     elif task_id == 2:
         res = max_bishops(m, n)
         print(f"Total: {len(res)}")
