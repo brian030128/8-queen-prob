@@ -29,4 +29,4 @@ def max_queens(m, n):
 
     backtrack(0, set(), set(), set(), result)
     return max_solution
-print(max_queens(8, 8))
+#print(max_queens(8, 8))
