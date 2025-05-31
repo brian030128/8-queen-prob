@@ -22,7 +22,7 @@ def solve_knights_bishops(m, n, queen_positions):
 
     # Helper to check knight attack
     def knight_attacks(r, c, placed_knights):
-        for dr, dc in knight_moves:
+        for dr, dc in knight_dirs:
             nr, nc = r + dr, c + dc
             if (nr, nc) in placed_knights:
                 return True
@@ -78,6 +78,7 @@ if __name__ == "__main__":
     print("bishops:", result["bishops"])
     print("knights:", result["knights"])
 
-    
-    valid, message = validate_chess_placement(8, 8, [(0, 0), (2, 3)], result["bishops"], result["knights"])
+    board = Board(8, 8, [(0, 0), (2, 3)], result["bishops"], result["knights"])
+    board.print_board() 
+    valid, message = validate_chess_placement(board)
     print("✅" if valid else "❌", message)
