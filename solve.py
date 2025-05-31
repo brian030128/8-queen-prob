@@ -40,7 +40,7 @@ def solve(board: Board, start=None, r=0, c=0, place_queen=False, place_knight=Fa
 
     # Early termination - if we can't possibly beat the current best
     remaining_cells = (board.m - r) * board.n - c
-    if score + remaining_cells <= best_solution.score:
+    if score + remaining_cells < best_solution.score:
         return best_solution
 
     if r == board.m:
