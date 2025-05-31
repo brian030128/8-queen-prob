@@ -26,6 +26,7 @@ class Board:
             raise ValueError("Bishop and Knight positions overlap")
         
         self.board = [['.' for _ in range(n)] for _ in range(m)]
+        # attack board is used to record the number of peices that can attack the position
         self.attack_board = [[0 for _ in range(n)] for _ in range(m)]
         for r, c in queen_positions:
             self.board[r][c] = 'Q'
@@ -92,6 +93,7 @@ class Board:
         self.unmark_attacks(r, c, piece)
 
     def diverse_score(self):
+        # diverse score is the number of different peices on the board
         appeared = set()
         for r in range(self.m):
             for c in range(self.n):
