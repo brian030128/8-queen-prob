@@ -69,6 +69,7 @@ def solve(board: Board, start=None, r=0, c=0, place_queen=False, place_knight=Fa
                             best_solution=best_solution, place_queen=place_queen, 
                             place_knight=place_knight, place_bishop=place_bishop, debug=debug)
         board.remove_piece(r, c)
+
     
     # Try placing nothing
     best_solution = solve(board, start, r=next_r, c=next_c, score=score, 

@@ -18,6 +18,7 @@ def main():
     m = int(sys.argv[2])
     n = int(sys.argv[3])
 
+    start = time.time()
     if task_id == 1:
         res = Result(max_queens(m, n))
         print(f"合計置入棋子數量： {res.total}")
@@ -52,6 +53,8 @@ def main():
         print(f"主教位置： {res.bishop_positions}")
     else:
         print("Invalid task_id (must be 1–5)")
+
+    print(f"執行時間： {time.time() - start} 秒")
 
 if __name__ == "__main__":
     main()
