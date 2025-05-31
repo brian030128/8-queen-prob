@@ -26,15 +26,40 @@ class Board:
             raise ValueError("Bishop and Knight positions overlap")
         
         self.board = [['.' for _ in range(n)] for _ in range(m)]
+        self.attack_board = [[False for _ in range(n)] for _ in range(m)]
         self.queen_positions = queen_positions
         self.bishop_positions = bishop_positions
         self.knight_positions = knight_positions
         for r, c in queen_positions:
             self.board[r][c] = 'Q'
+            self.mark_attack(r, c, 'Q')
         for r, c in bishop_positions:
             self.board[r][c] = 'B'
+            self.mark_attack(r, c, 'B')
         for r, c in knight_positions:
             self.board[r][c] = 'N'
+            self.mark_attack(r, c, 'N')
+    
+    def mark_attack(self, r, c, piece):
+        if piece == 'Q':
+            for dr, dc in queen_dirs:
+                rr, cc = r + dr, c + dc
+                while 0 <= rr < self.m and 0 <= cc < self.n:
+                    self.attack_board[rr][cc] = True
+                    rr += dr
+                    cc += dc
+        elif piece == 'B':
+            for dr, dc in bishop_dirs:
+                rr, cc = r + dr, c + dc
+                while 0 <= rr < self.m and 0 <= cc < self.n:
+                    self.attack_board[rr][cc] = True
+                    rr += dr
+                    cc += dc
+        elif piece == 'N':
+            for dr, dc in knight_dirs:
+                rr, cc = r + dr, c + dc
+                if 0 <= rr < self.m and 0 <= cc < self.n:
+                    self.attack_board[rr][cc] = True
 
     def print_board(self):
         for row in self.board:
@@ -68,30 +93,10 @@ def can_place(board: Board, r, c, piece):
 
 
 def validate_chess_placement(board: Board):
-    attack_positions = set()
-    for r, c in board.queen_positions:
-        for dr, dc in queen_dirs:
-            rr, cc = r + dr, c + dc
-            while 0 <= rr < board.m and 0 <= cc < board.n:
-                attack_positions.add((rr, cc))
-                rr += dr
-                cc += dc
-    for r, c in board.bishop_positions:
-        for dr, dc in bishop_dirs:
-            rr, cc = r + dr, c + dc
-            while 0 <= rr < board.m and 0 <= cc < board.n:
-                attack_positions.add((rr, cc))
-                rr += dr
-                cc += dc
-    for r, c in board.knight_positions:
-        for dr, dc in knight_dirs:
-            rr, cc = r + dr, c + dc
-            if 0 <= rr < board.m and 0 <= cc < board.n:
-                attack_positions.add((rr, cc))
-    
-    for r, c in attack_positions:
-        if board.board[r][c] != '.':
-            return False, f"Attack position ({r}, {c}) overlaps with {board.board[r][c]}"
+    for r in range(board.m):
+        for c in range(board.n):
+            if board.attack_board[r][c] and board.board[r][c] != '.':
+                return False, f"Attack position ({r}, {c}) overlaps with {board.board[r][c]}"
     return True, "Valid placement"
 
 
