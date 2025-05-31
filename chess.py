@@ -40,6 +40,33 @@ class Board:
         for row in self.board:
             print(' '.join(row))
 
+
+def can_place(board: Board, r, c, piece):
+    if piece == 'Q':
+        for dr, dc in queen_dirs:
+            rr, cc = r + dr, c + dc
+            while 0 <= rr < board.m and 0 <= cc < board.n:
+                if board.board[rr][cc] != '.':
+                    return False
+                rr += dr
+                cc += dc
+    elif piece == 'B':
+        for dr, dc in bishop_dirs:
+            rr, cc = r + dr, c + dc
+            while 0 <= rr < board.m and 0 <= cc < board.n:
+                if board.board[rr][cc] != '.':
+                    return False
+                rr += dr
+                cc += dc
+    elif piece == 'N':
+        for dr, dc in knight_dirs:
+            rr, cc = r + dr, c + dc
+            if 0 <= rr < board.m and 0 <= cc < board.n:
+                if board.board[rr][cc] != '.':
+                    return False
+    return True
+
+
 def validate_chess_placement(board: Board):
     attack_positions = set()
     for r, c in board.queen_positions:
@@ -77,4 +104,10 @@ if __name__ == "__main__":
     board2.print_board()
     result, msg = validate_chess_placement(board2)
     assert result == False, msg
-    
+
+    board3 = Board(5, 4, [(0, 0)], [], [])
+    assert can_place(board3, 0, 1, 'Q') == False
+    assert can_place(board3, 1, 2, 'N') == False
+    assert can_place(board3, 1, 1, 'B') == False
+    assert can_place(board3, 1, 2, 'Q') == True
+
