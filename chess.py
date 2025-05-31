@@ -54,13 +54,6 @@ def validate_chess_placement(m, n, queen_positions, bishop_positions, knight_pos
             nr, nc = r + dr, c + dc
             if (nr, nc) in knight_set:
                 return False, f"Knights at {(r, c)} and {(nr, nc)} attack each other."
-            
-    bishops_set = set(bishop_positions)
-    for r, c in bishop_positions:
-        if (r, c) in queen_attacks:
-            return False, f"Bishop at {(r, c)} is attacked by a queen."
-        for dr, dc in bishop_dirs:
-            nr, nc = r + dr, c + dc
 
     # Step 4: Validate knight and bishop mutual non-attack (optional, they don’t attack each other by rule)
     return True, "Valid configuration."
