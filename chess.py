@@ -32,15 +32,15 @@ class Board:
         self.knight_positions = knight_positions
         for r, c in queen_positions:
             self.board[r][c] = 'Q'
-            self.mark_attack(r, c, 'Q')
+            self.mark_attacks(r, c, 'Q')
         for r, c in bishop_positions:
             self.board[r][c] = 'B'
-            self.mark_attack(r, c, 'B')
+            self.mark_attacks(r, c, 'B')
         for r, c in knight_positions:
             self.board[r][c] = 'N'
-            self.mark_attack(r, c, 'N')
+            self.mark_attacks(r, c, 'N')
     
-    def mark_attack(self, r, c, piece):
+    def mark_attacks(self, r, c, piece):
         if piece == 'Q':
             for dr, dc in queen_dirs:
                 rr, cc = r + dr, c + dc
@@ -60,6 +60,10 @@ class Board:
                 rr, cc = r + dr, c + dc
                 if 0 <= rr < self.m and 0 <= cc < self.n:
                     self.attack_board[rr][cc] = True
+
+    def place_piece(self, r, c, piece):
+        self.board[r][c] = piece
+        self.mark_attacks(r, c, piece)
 
     def print_board(self):
         for row in self.board:
