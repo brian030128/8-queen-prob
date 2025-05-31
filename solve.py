@@ -7,6 +7,7 @@ from chess import *
 
 class Solution:
     def __init__(self, board: Board, score: int):
+        # copy is necessary because the board is a reference, and will be modified in the solve function
         self.board = copy.deepcopy(board)
         self.score = score
         self.diverse_score = board.diverse_score()
@@ -19,7 +20,6 @@ class Result:
         self.total = solution.score
         board = solution.board
 
-        # More efficient iteration with enumerate
         for r in range(board.m):
             for c in range(board.n):
                 if board.board[r][c] == 'Q':
