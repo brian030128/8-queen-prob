@@ -29,15 +29,16 @@ class Result:
         self.total = solution.score
 
 
-def solve(board: Board, start, r=0, c=0, place_queen=False, place_knight=False, place_bishop=False, best_solution: Solution = None, score=0):
+def solve(board: Board, start, r=0, c=0, place_queen=False, place_knight=False, place_bishop=False, best_solution: Solution = None, score=0, debug=True):
     if best_solution is None:
         best_solution = Solution(board, score)
 
     if r == board.m:
         if score > best_solution.score or (score == best_solution.score and board.diverse_score() > best_solution.diverse_score):
             best_solution = Solution(board, score)
-            print(f"Found better solution: {score} {board.diverse_score()} in {time.time() - start} seconds")
-            best_solution.board.print_board()
+            if debug:
+                print(f"Found better solution: {score} {board.diverse_score()} in {time.time() - start} seconds")
+                best_solution.board.print_board()
         return best_solution
 
     next_r, next_c = (r, c + 1) if c + 1 < board.n else (r + 1, 0)
