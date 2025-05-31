@@ -20,14 +20,12 @@ def main():
 
     if task_id == 1:
         res = Result(max_queens(m, n))
-        #合計置入棋子數量：13
-        #皇后位置：[(0, 0), (0, 2), (0, 4), (1, 1), (1, 3), (2, 0), (2, 2), (2, 4), (3, 1), (3, 3), (4, 0), (4, 2), (4, 4)] 
         print(f"合計置入棋子數量： {res.total}")
         print(f"皇后位置： {res.queen_positions}")
     elif task_id == 2:
-        res = max_bishops(m, n)
-        print(f"Total: {len(res)}")
-        print(res)
+        res = Result(max_bishops(m, n))
+        print(f"合計置入棋子數量： {res.total}")
+        print(f"主教位置： {res.bishop_positions}")
     elif task_id == 3:
         res = max_knights(m, n)
         print(f"Total: {len(res)}")
