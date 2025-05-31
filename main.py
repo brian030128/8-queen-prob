@@ -27,9 +27,9 @@ def main():
         print(f"合計置入棋子數量： {res.total}")
         print(f"主教位置： {res.bishop_positions}")
     elif task_id == 3:
-        res = max_knights(m, n)
-        print(f"Total: {len(res)}")
-        print(res)
+        res = Result(max_knights(m, n))
+        print(f"合計置入棋子數量： {res.total}")
+        print(f"騎士位置： {res.knight_positions}")
     elif task_id == 4:
         bishops, knights = solve_knights_bishops(m, n)
         print(f"Total: {len(bishops) + len(knights)}")
