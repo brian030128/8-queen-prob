@@ -1,6 +1,6 @@
 from chess import *
 
-def solve_knights_bishops(m, n, queen_positions):
+def solve_knights_bishops_with_queens(m, n, queen_positions):
     # Directions for queen (rook + bishop)
 
 

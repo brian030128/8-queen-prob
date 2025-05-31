@@ -3,8 +3,8 @@ import ast
 from task1 import max_queens
 from task2 import max_bishops
 from task3 import max_knights
-#from task4 import solve_mixed_knight_bishop
-from task5 import solve_knights_bishops
+from task4 import solve_knights_bishops
+from task5 import solve_knights_bishops_with_queens
 
 def main():
     if len(sys.argv) < 4:
@@ -37,7 +37,7 @@ def main():
             print("Task 5 requires a list of queen positions")
             return
         queens = ast.literal_eval(sys.argv[4])
-        bishops, knights = solve_knights_bishops(m, n, queens)
+        bishops, knights = solve_knights_bishops_with_queens(m, n, queens)
         print(f"Total: {len(bishops) + len(knights)}")
         print("Bishops:", bishops)
         print("Knights:", knights)
