@@ -1,79 +1,58 @@
+import copy
+import sys 
+import time
+
 from chess import *
 
+
+class Solution:
+    def __init__(self, board: Board, score: int):
+        self.board = copy.deepcopy(board)
+        self.score = score
+        self.diverse_score = board.diverse_score()
+
+
+def solve(board: Board, start = None, place_queen=False, place_knight=False, place_bishop=False, best_solution: Solution = None, score=0):
+    if start is None:
+        start = time.time()
+    if best_solution is None:
+        best_solution = Solution(board, score)
+    for r in range(board.m):
+        for c in range(board.n):
+            if place_queen and board.can_place(r, c, 'Q'):
+                board.place_piece(r, c, 'Q')
+                best_solution = solve(board, start, True, False, False, best_solution, score + 1)
+                board.remove_piece(r, c)
+            if place_knight and board.can_place(r, c, 'N'):
+                board.place_piece(r, c, 'N')
+                best_solution = solve(board, start, False, True, False, best_solution, score + 1)
+                board.remove_piece(r, c)
+            if place_bishop and board.can_place(r, c, 'B'):
+                board.place_piece(r, c, 'B')
+                best_solution = solve(board, start, False, False, True, best_solution, score + 1)
+                board.remove_piece(r, c)
+            
+            if score > best_solution.score or (score == best_solution.score and board.diverse_score() > best_solution.diverse_score):
+                best_solution = Solution(board, score)
+                print(f"Found better solution: {score} {board.diverse_score()} in {time.time() - start} seconds")
+                best_solution.board.print_board()
+    
+    return best_solution
+
+
 def solve_knights_bishops_with_queens(m, n, queen_positions):
-    # Directions for queen (rook + bishop)
+    board = Board(m, n, queen_positions)
 
-
-    board = [['.' for _ in range(n)] for _ in range(m)]
-    attacked = [[False for _ in range(n)] for _ in range(m)]
-
-    # Mark queens and their attack
-    for qr, qc in queen_positions:
-        board[qr][qc] = 'Q'
-        attacked[qr][qc] = True
-        for dr, dc in queen_dirs:
-            r, c = qr + dr, qc + dc
-            while 0 <= r < m and 0 <= c < n:
-                attacked[r][c] = True
-                if board[r][c] == 'Q':
-                    break
-                r += dr
-                c += dc
-
-    # Helper to check knight attack
-    def knight_attacks(r, c, placed_knights):
-        for dr, dc in knight_dirs:
-            nr, nc = r + dr, c + dc
-            if (nr, nc) in placed_knights:
-                return True
-        return False
-
-    # Helper to check bishop attack
-    def bishop_attacks(r, c, placed_bishops):
-        for dr, dc in bishop_dirs:
-            nr, nc = r + dr, c + dc
-            while 0 <= nr < m and 0 <= nc < n:
-                if (nr, nc) in placed_bishops:
-                    return True
-                if board[nr][nc] == 'Q':
-                    break
-                nr += dr
-                nc += dc
-        return False
-
-    # Try placing knights first then bishops (greedy)
-    knights = []
-    bishops = []
-    occupied = set(queen_positions)
-
-    for r in range(m):
-        for c in range(n):
-            if attacked[r][c] or (r, c) in occupied:
-                continue
-            # Try knight first
-            if not knight_attacks(r, c, knights):
-                knights.append((r, c))
-                occupied.add((r, c))
-
-    for r in range(m):
-        for c in range(n):
-            if attacked[r][c] or (r, c) in occupied:
-                continue
-            if not bishop_attacks(r, c, bishops):
-                bishops.append((r, c))
-                occupied.add((r, c))
-
-    return {
-        "total": len(knights) + len(bishops),
-        "bishops": bishops,
-        "knights": knights
-    }
+    best_solution = solve(board, place_knight=True, place_bishop=True)
+    best_solution.board.print_board()
 
 
 
 
 if __name__ == "__main__":
-    result = solve_knights_bishops(8, 8, [(0, 0), (2, 3)])
+    # increase max recursion limit
+    sys.setrecursionlimit(10000)
+    result = solve_knights_bishops_with_queens(8, 8, [(0, 0), (2, 3)])
     print("Total:", result["total"])
     print("bishops:", result["bishops"])
     print("knights:", result["knights"])

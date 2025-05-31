@@ -27,9 +27,6 @@ class Board:
         
         self.board = [['.' for _ in range(n)] for _ in range(m)]
         self.attack_board = [[0 for _ in range(n)] for _ in range(m)]
-        self.queen_positions = queen_positions
-        self.bishop_positions = bishop_positions
-        self.knight_positions = knight_positions
         for r, c in queen_positions:
             self.board[r][c] = 'Q'
             self.mark_attacks(r, c, 'Q')
@@ -94,6 +91,14 @@ class Board:
         self.board[r][c] = '.'
         self.unmark_attacks(r, c, piece)
 
+    def diverse_score(self):
+        appeared = set()
+        for r in range(self.m):
+            for c in range(self.n):
+                if self.board[r][c] != '.':
+                    appeared.add(self.board[r][c])
+        return len(appeared)
+
 
     def print_board(self):
         for row in self.board:
@@ -101,6 +106,8 @@ class Board:
 
 
     def can_place(self, r, c, piece):
+        if self.board[r][c] != '.':
+            return False
         if self.attack_board[r][c] > 0:
             return False
         
