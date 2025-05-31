@@ -31,19 +31,25 @@ def main():
         print(f"合計置入棋子數量： {res.total}")
         print(f"騎士位置： {res.knight_positions}")
     elif task_id == 4:
-        bishops, knights = solve_knights_bishops(m, n)
-        print(f"Total: {len(bishops) + len(knights)}")
-        print("Bishops:", bishops)
-        print("Knights:", knights)
+        res = Result(solve_knights_bishops(m, n))
+        print(f"合計置入棋子數量： {res.total}")
+        print(f"騎士位置： {res.knight_positions}")
+        print(f"主教位置： {res.bishop_positions}")
     elif task_id == 5:
         if len(sys.argv) < 5:
             print("Task 5 requires a list of queen positions")
             return
-        queens = ast.literal_eval(sys.argv[4])
-        bishops, knights = solve_knights_bishops_with_queens(m, n, queens)
-        print(f"Total: {len(bishops) + len(knights)}")
-        print("Bishops:", bishops)
-        print("Knights:", knights)
+        queens = []
+        i = 5
+        assert sys.argv[4] == "["
+        while sys.argv[i] != "]":
+            pos = sys.argv[i].split(" ")
+            queens.append((int(pos[0]), int(pos[1])))
+            i += 1
+        res = Result(solve_knights_bishops_with_queens(m, n, queens))
+        print(f"合計置入棋子數量： {res.total}")
+        print(f"騎士位置： {res.knight_positions}")
+        print(f"主教位置： {res.bishop_positions}")
     else:
         print("Invalid task_id (must be 1–5)")
 

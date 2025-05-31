@@ -1,6 +1,6 @@
-import copy
 import sys 
 import time
+import copy
 
 from chess import *
 
@@ -16,8 +16,10 @@ class Result:
         self.queen_positions = []
         self.knight_positions = []
         self.bishop_positions = []
+        self.total = solution.score
         board = solution.board
 
+        # More efficient iteration with enumerate
         for r in range(board.m):
             for c in range(board.n):
                 if board.board[r][c] == 'Q':
@@ -27,11 +29,19 @@ class Result:
                 elif board.board[r][c] == 'B':
                     self.bishop_positions.append((r, c))
         self.total = solution.score
+        
 
+def solve(board: Board, start=None, r=0, c=0, place_queen=False, place_knight=False, place_bishop=False, best_solution: Solution = None, score=0, debug=True):
+    if start is None:
+        start = time.time()
 
-def solve(board: Board, start, r=0, c=0, place_queen=False, place_knight=False, place_bishop=False, best_solution: Solution = None, score=0, debug=True):
     if best_solution is None:
         best_solution = Solution(board, score)
+
+    # Early termination - if we can't possibly beat the current best
+    remaining_cells = (board.m - r) * board.n - c
+    if score + remaining_cells <= best_solution.score:
+        return best_solution
 
     if r == board.m:
         if score > best_solution.score or (score == best_solution.score and board.diverse_score() > best_solution.diverse_score):
@@ -43,21 +53,26 @@ def solve(board: Board, start, r=0, c=0, place_queen=False, place_knight=False, 
 
     next_r, next_c = (r, c + 1) if c + 1 < board.n else (r + 1, 0)
 
-   # Try placing a queen
+    # Try pieces in order of potential value (queens typically most valuable)
+    pieces_to_try = []
     if place_queen and board.can_place(r, c, 'Q'):
-        board.place_piece(r, c, 'Q')
-        best_solution = solve(board, start, r=next_r, c=next_c, score=score + 1, best_solution=best_solution, place_queen=place_queen, place_knight=place_knight, place_bishop=place_bishop)
-        board.remove_piece(r, c)
+        pieces_to_try.append('Q')
     if place_knight and board.can_place(r, c, 'N'):
-        board.place_piece(r, c, 'N')
-        best_solution = solve(board, start, r=next_r, c=next_c, score=score + 1, best_solution=best_solution, place_queen=place_queen, place_knight=place_knight, place_bishop=place_bishop)
-        board.remove_piece(r, c)
+        pieces_to_try.append('N')
     if place_bishop and board.can_place(r, c, 'B'):
-        board.place_piece(r, c, 'B')
-        best_solution = solve(board, start, r=next_r, c=next_c, score=score + 1, best_solution=best_solution, place_queen=place_queen, place_knight=place_knight, place_bishop=place_bishop)
+        pieces_to_try.append('B')
+    
+    # Try placing pieces
+    for piece in pieces_to_try:
+        board.place_piece(r, c, piece)
+        best_solution = solve(board, start, r=next_r, c=next_c, score=score + 1, 
+                            best_solution=best_solution, place_queen=place_queen, 
+                            place_knight=place_knight, place_bishop=place_bishop, debug=debug)
         board.remove_piece(r, c)
-        
-     # Try placing nothing
-    best_solution = solve(board, start, r=next_r, c=next_c, score=score, best_solution=best_solution, place_queen=place_queen, place_knight=place_knight, place_bishop=place_bishop)
+    
+    # Try placing nothing
+    best_solution = solve(board, start, r=next_r, c=next_c, score=score, 
+                        best_solution=best_solution, place_queen=place_queen, 
+                        place_knight=place_knight, place_bishop=place_bishop, debug=debug)
     
     return best_solution
