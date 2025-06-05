@@ -1,4 +1,4 @@
-# Chess Piece Placement Solver
+# 8-Queen Problem Solver
 
 This project implements a solver for various chess piece placement problems using backtracking algorithms. It can solve problems involving Queens, Bishops, and Knights on an M×N chessboard.
 
@@ -6,7 +6,7 @@ This project implements a solver for various chess piece placement problems usin
 
 ```
 8-queen-prob/
-├── chess.py (Core Game Logic)
+├── chess.py
 │   ├── Board Class
 │   │   ├── Board Representation
 │   │   │   ├── Visual Board (piece positions)
@@ -56,11 +56,6 @@ This project implements a solver for various chess piece placement problems usin
   3. Maximum Knights placement
   4. Combined Knights and Bishops placement
   5. Knights and Bishops placement with fixed Queen positions
-- Efficient backtracking algorithm with early termination
-- Dual-board system for tracking piece positions and attacks
-- Comprehensive validation of piece placements
-- Performance optimization and time tracking
-- Flexible command-line interface
 
 ## Implementation Details
 
@@ -97,7 +92,6 @@ This project implements a solver for various chess piece placement problems usin
 
 3. **Performance Optimization**
    - Early termination checks
-   - Efficient data structures
    - Attack tracking to avoid redundant calculations
 
 ## Usage
@@ -117,22 +111,22 @@ python team5.py <task_id> <m> <n> [<queen_positions>]
 
 1. Maximum Queens on 8×8 board:
 ```bash
-python3 team5.py 1 8 8
+python3 team5.py 1 6 9
 ```
 
 2. Maximum Bishops on 5×5 board:
 ```bash
-python3 team5.py 2 5 5
+python3 team5.py 2 5 3
 ```
 
 3. Maximum Knights on 6×6 board:
 ```bash
-python3 team5.py 3 6 6
+python3 team5.py 3 5 5
 ```
 
 4. Combined Knights and Bishops on 7×7 board:
 ```bash
-python3 team5.py 4 7 7
+python3 team5.py 4 5 8
 ```
 
 5. Knights and Bishops with fixed Queens on 8×8 board:
