@@ -37,7 +37,7 @@ def solve(board: Board, start=None, r=0, c=0, place_queen=False, place_knight=Fa
 
     if best_solution is None:
         best_solution = Solution(board, score)
-    
+    # Recursive terminate condition
     if r == board.m:
         if score > best_solution.score or (score == best_solution.score and board.diverse_score() > best_solution.diverse_score):
             best_solution = Solution(board, score)
