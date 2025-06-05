@@ -52,16 +52,15 @@ def solve(board: Board, start=None, r=0, c=0, place_queen=False, place_knight=Fa
         return best_solution
 
 
-
     next_r, next_c = (r, c + 1) if c + 1 < board.n else (r + 1, 0)
 
     pieces_to_try = []
-    if place_queen and board.can_place(r, c, 'Q'):
-        pieces_to_try.append('Q')
-    if place_bishop and board.can_place(r, c, 'B'):
-        pieces_to_try.append('B')
     if place_knight and board.can_place(r, c, 'N'):
         pieces_to_try.append('N')
+    if place_bishop and board.can_place(r, c, 'B'):
+        pieces_to_try.append('B')
+    if place_queen and board.can_place(r, c, 'Q'):
+        pieces_to_try.append('Q')
     
     # Try placing pieces
     for piece in pieces_to_try:
