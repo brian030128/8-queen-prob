@@ -37,12 +37,7 @@ def solve(board: Board, start=None, r=0, c=0, place_queen=False, place_knight=Fa
 
     if best_solution is None:
         best_solution = Solution(board, score)
-
-    # Early termination - if we can't possibly beat the current best
-    remaining_cells = (board.m - r) * board.n - c
-    if score + remaining_cells < best_solution.score:
-        return best_solution
-
+    
     if r == board.m:
         if score > best_solution.score or (score == best_solution.score and board.diverse_score() > best_solution.diverse_score):
             best_solution = Solution(board, score)
@@ -50,6 +45,13 @@ def solve(board: Board, start=None, r=0, c=0, place_queen=False, place_knight=Fa
                 print(f"Found better solution: {score} {board.diverse_score()} in {time.time() - start} seconds")
                 best_solution.board.print_board()
         return best_solution
+
+    # Early termination - if we can't possibly beat the current best
+    remaining_cells = (board.m - r) * board.n - c
+    if score + remaining_cells < best_solution.score:
+        return best_solution
+
+
 
     next_r, next_c = (r, c + 1) if c + 1 < board.n else (r + 1, 0)
 
